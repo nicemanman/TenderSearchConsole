@@ -1,6 +1,7 @@
 ﻿
 using Core;
 using DomainModel.Requests;
+using DomainModel.RestClients;
 using DomainModel.Services;
 using DomainModel.Services.IServices;
 using System;
@@ -28,7 +29,9 @@ namespace Presentation.Common
 
                 instance
                 .RegisterService<IService, Service>()
-                .RegisterService<IService, TenderService>(ServiceIdentificators.TenderService)
+                .RegisterService<ITenderService, TenderService>()
+                .RegisterService<IService, TenderService>(ServiceNames.TenderService)
+                .RegisterService<INetClient, TenderNetClient>(ServiceNames.TenderService)
                 ;
                 
                 return instance;

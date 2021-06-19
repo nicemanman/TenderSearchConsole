@@ -1,4 +1,4 @@
-﻿using DomainModel.Common;
+﻿
 using DomainModel.Requests;
 using System;
 using System.Collections.Generic;
@@ -15,9 +15,9 @@ namespace DomainModel.Responses
     public interface IResponse
     {
         bool IsValid { get; }
-        ValidationResult ValidationResult { get; }
+        ValidationResult ValidationResult { get; set; }
         string Message { get; }
         Dictionary<string, object> Info { get; }
-        ResponseTypes Type { get; set; }
+        
     }
 }

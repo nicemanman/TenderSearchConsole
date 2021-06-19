@@ -8,7 +8,7 @@ namespace DomainModel.Requests.TenderServiceRequests
 {
     public interface ITenderGetRequest : IGetRequest
     {
-        int TenderID { get; set; }
-        int TenderDate { get; set; }
+        string TenderNumber { get; set; }
+        bool WithDocumentation { get; set; }
     }
 }

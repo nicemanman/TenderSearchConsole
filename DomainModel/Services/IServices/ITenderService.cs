@@ -1,4 +1,6 @@
 ﻿using DomainModel.Requests;
+using DomainModel.Requests.TenderServiceRequests;
+using DomainModel.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,7 @@ namespace DomainModel.Services.IServices
 {
     public interface ITenderService : IService
     {
+        Task<ITenderGetResponse> GetTendersAsync(ITenderGetRequest request);
+        Task<ITenderGetResponse> GetTenderDocumentationAsync(ITenderGetRequest request);
     }
 }

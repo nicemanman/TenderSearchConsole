@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Services.IServices
 {
+    
     public interface IService
     {
-        Task<IResponse> RequestAsync(IRequest request);
         Task<IResponse> GetAsync(IGetRequest request);
     }
 }

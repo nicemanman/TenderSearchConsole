@@ -1,7 +1,9 @@
 ﻿
+using DomainModel.Models;
 using DomainModel.Requests;
 using DomainModel.Requests.TenderServiceRequests;
 using DomainModel.Responses;
+using DomainModel.RestClients.Queries;
 using DomainModel.Services.IServices;
 using Presentation.Common;
 using Presentation.Views;
@@ -21,11 +23,20 @@ namespace Presentation.Presenters
 
         private ConsoleWorkflow workflow;
         private readonly IService service;
-        public TenderSearchConsolePresenter(IApplicationController controller, ITenderSearchConsoleView view, IService service) : base(controller, view)
+        public TenderSearchConsolePresenter(IApplicationController controller, ITenderSearchConsoleView view, ITenderService service) : base(controller, view)
         {
             this.service = service;
-            var response = service.GetAsync(new TenderGetRequest() { TenderID = 1, TenderDate = 2 }).Result;
-            View.ParametersSelected += View_ParametersSelected1;
+            var response = service.GetTenderDocumentationAsync(new TenderGetRequest("1768199")).Result;
+            if (response.IsValid && response is ITenderGetResponse tenderServiceGetResponse)
+            {
+                View.ShowSuccessMessage("Удачно получена информация от сервера");
+            }
+            else 
+            {
+                View.ShowErrorMessage(response.ValidationResult.Messages[0]);
+            }
+            View.ParametersSelected += View_ParametersSelected;
+
             //можно добавить любое количество шагов, поменять их местами
             workflow = new ConsoleWorkflow(new List<IConsoleStep>()
             {
@@ -35,11 +46,11 @@ namespace Presentation.Presenters
                 workflow.Execute().Wait();
         }
 
-        private void View_ParametersSelected1(Dictionary<string, object> obj)
+        private void View_ParametersSelected(Dictionary<string, object> obj)
         {
             Info = obj;
         }
-
+        
         private Task InvokeParametersInput()
         {
             var parameters = new Response();

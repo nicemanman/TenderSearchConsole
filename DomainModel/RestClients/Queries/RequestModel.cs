@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainModel.Common
+namespace DomainModel.RestClients.Queries
 {
-    public enum ResponseTypes
+    public abstract class RequestModel
     {
-        OK,
-        NOT_FOUND,
-        BAD_REQUEST
     }
 }

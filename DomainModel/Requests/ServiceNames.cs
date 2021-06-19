@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Requests
 {
-    public static class ServiceIdentificators
+    public static class ServiceNames
     {
         public static string TenderService = "TENDER_SERVICE";
     }

@@ -1,4 +1,5 @@
-﻿using DomainModel.Services.IServices;
+﻿using DomainModel.RestClients.Queries;
+using DomainModel.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Requests
 {
-
     public interface IRequest
     {
-        string ServiceID { get; }
+        string ServiceName { get; }
         Dictionary<string, object> Info { get; set; }
     }
 }
