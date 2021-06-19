@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Services.IServices
 {
-    public interface ITenderService : IService
+    public interface ITenderService
     {
         Task<ITenderGetResponse> GetTendersAsync(ITenderGetRequest request);
         Task<ITenderGetResponse> GetTenderDocumentationAsync(ITenderGetRequest request);

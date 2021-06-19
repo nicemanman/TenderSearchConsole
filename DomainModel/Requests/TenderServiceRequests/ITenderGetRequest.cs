@@ -9,6 +9,7 @@ namespace DomainModel.Requests.TenderServiceRequests
     public interface ITenderGetRequest : IGetRequest
     {
         string TenderNumber { get; set; }
+        int Page { get; set; }
         bool WithDocumentation { get; set; }
     }
 }

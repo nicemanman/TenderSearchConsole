@@ -10,7 +10,7 @@ namespace Presentation.Common
     {
         IApplicationController RegisterView<TView, TImplementation>()
             where TImplementation : class, TView
-            where TView : IConsoleView;
+            where TView : IView;
 
         IApplicationController RegisterInstance<TArgument>(TArgument instance);
 

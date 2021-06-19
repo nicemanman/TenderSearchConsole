@@ -10,7 +10,6 @@ namespace DomainModel.Requests
 {
     public interface IRequest
     {
-        string ServiceName { get; }
         Dictionary<string, object> Info { get; set; }
     }
 }

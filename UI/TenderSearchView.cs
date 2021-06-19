@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace UI
 {
-    public class TenderSearchView : BaseScreen, ITenderSearchConsoleView
+    public class TenderSearchView : BaseScreen, ITenderSearchView
     {
        
     }

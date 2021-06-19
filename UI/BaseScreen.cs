@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace UI
 {
-    public abstract class BaseScreen : IConsoleView
+    public abstract class BaseScreen : IView
     {
         public event Action<Dictionary<string, object>> ParametersSelected;
         public event Action<int> MenuRowSelected;
 
-        public void Close(IConsoleView nextView)
+        public void Close(IView nextView)
         {
             Console.Clear();
         }

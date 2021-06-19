@@ -26,19 +26,30 @@ namespace DomainModel.RestClients
         { }
         public async Task<TenderGetResponseModel> GetTenders(ITenderGetRequest request)
         {
-            var tenders = await QueryTender(new TenderGetRequestModel() 
+            TenderGetResponseModel response;
+            if (string.IsNullOrWhiteSpace(request.TenderNumber))
             {
-                Id = request.TenderNumber
-            });
+                response = await QueryTender(new TenderGetRequestModel());
+            }
+            else 
+            {
+                response = await QueryTender(new TenderGetRequestModel()
+                {
+                    Id = request.TenderNumber,
+                    page = request.Page,
+                    itemsPerPage = 10
+                });
+            }
+            
             if (request.WithDocumentation) 
             {
-                foreach (var tender in tenders.invData)
+                foreach (var tender in response.invData)
                 {
                     var documentation =await QueryDocumentation(tender.Id.ToString());
                     tender.documentation = documentation;
                 }
             }
-            return tenders;
+            return response;
         }
         public async Task<List<documentation>> GetTenderDocumentation(ITenderGetRequest request)
         {

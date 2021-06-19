@@ -17,6 +17,7 @@ namespace DomainModel.Responses
         {
 
         }
+        public int PagesCount { get; set; }
         public List<documentation> TenderDocumentation { get; set; }
         public List<InvData> Tenders { get; set; }
     }

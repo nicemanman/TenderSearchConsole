@@ -17,26 +17,15 @@ namespace DomainModel.Services
 {
     public class TenderService : ITenderService
     {
-        public async Task<IResponse> GetAsync(IGetRequest request)
-        {
-            if (!(request is ITenderGetRequest tenderGetRequest)) 
-                return new Response(new ValidationResult("Для данного вида запроса передан неправильный запрос"));
-            var restClient = LightInjectContainer.Current.Resolve<INetClient>(request.ServiceName);
-            if (!(restClient is ITenderNetClient tenderNetClient)) 
-                return new Response(new ValidationResult("Для данного сервиса неправильно установлен rest client"));
-            var tenderResponse = await tenderNetClient.GetTenders(tenderGetRequest);
-            return new Response<TenderGetResponseModel>(tenderResponse);
-        }
+        private readonly ITenderNetClient client;
 
+        public TenderService(ITenderNetClient client)
+        {
+            this.client = client;
+        }
         public async Task<ITenderGetResponse> GetTenderDocumentationAsync(ITenderGetRequest request)
         {
-            var restClient = LightInjectContainer.Current.Resolve<INetClient>(request.ServiceName);
-            if (!(restClient is ITenderNetClient tenderNetClient))
-                return new TenderGetResponse()
-                {
-                    ValidationResult = new ValidationResult("Для данного сервиса неправильно установлен rest client")
-                };
-            var documentation = await tenderNetClient.GetTenderDocumentation(request);
+            var documentation = await client.GetTenderDocumentation(request);
             return new TenderGetResponse()
             {
                 TenderDocumentation = documentation
@@ -45,16 +34,11 @@ namespace DomainModel.Services
 
         public async Task<ITenderGetResponse> GetTendersAsync(ITenderGetRequest request)
         {
-            var restClient = LightInjectContainer.Current.Resolve<INetClient>(request.ServiceName);
-            if (!(restClient is ITenderNetClient tenderNetClient))
-                return new TenderGetResponse()
-                {
-                    ValidationResult = new ValidationResult("Для данного сервиса неправильно установлен rest client")
-                };
-            var tenderResponse = await tenderNetClient.GetTenders(request);
+            var tenderResponse = await client.GetTenders(request);
             return new TenderGetResponse()
             {
-                Tenders = tenderResponse.invData
+                Tenders = tenderResponse.invData,
+                PagesCount = tenderResponse.totalpages
             };
         }
     }

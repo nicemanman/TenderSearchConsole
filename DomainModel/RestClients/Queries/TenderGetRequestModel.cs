@@ -11,7 +11,7 @@ namespace DomainModel.RestClients.Queries
         /// <summary>
         /// Номер тендера
         /// </summary>
-        public string Id { get; set; } = "1763198";
+        public string Id { get; set; }
 
         /// <summary>
         /// Сколько элементов должно быть на странице

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Presentation.Common
 {
     public abstract class BasePresenter<TView> : IPresenter
-        where TView : IConsoleView
+        where TView : IView
     {
         protected TView View { get; private set; }
         protected IApplicationController Controller { get; private set; }
@@ -25,7 +25,7 @@ namespace Presentation.Common
     }
 
     public abstract class BasePresenter<TView, TArg> : IPresenter<TArg>
-        where TView : IConsoleView
+        where TView : IView
     {
         protected TView View { get; private set; }
         protected IApplicationController Controller { get; private set; }

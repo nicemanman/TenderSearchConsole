@@ -12,8 +12,8 @@ namespace UI
             var controller = ApplicationController.Current;
             
             Console.ForegroundColor = ConsoleColor.Gray;
-            controller.RegisterView<ITenderSearchConsoleView, TenderSearchView>();
-            controller.Run<TenderSearchConsolePresenter>();
+            controller.RegisterView<ITenderSearchView, TenderSearchView>();
+            controller.Run<TenderSearchPresenter>();
         }
     }
 }

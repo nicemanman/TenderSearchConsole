@@ -26,12 +26,9 @@ namespace Presentation.Common
             {
                 if (instance == null)
                     instance = new ApplicationController(LightInjectContainer.Current);
-
                 instance
-                .RegisterService<IService, Service>()
                 .RegisterService<ITenderService, TenderService>()
-                .RegisterService<IService, TenderService>(ServiceNames.TenderService)
-                .RegisterService<INetClient, TenderNetClient>(ServiceNames.TenderService)
+                .RegisterService<ITenderNetClient, TenderNetClient>()
                 ;
                 
                 return instance;
@@ -49,7 +46,7 @@ namespace Presentation.Common
 
         public IApplicationController RegisterView<TView, TImplementation>()
             where TImplementation : class, TView
-            where TView : IConsoleView
+            where TView : IView
         {
             _container.Register<TView, TImplementation>();
             return this;
