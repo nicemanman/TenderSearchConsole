@@ -1,5 +1,4 @@
 ﻿
-using Core;
 using DomainModel.Models;
 using DomainModel.Requests;
 using DomainModel.Requests.TenderServiceRequests;

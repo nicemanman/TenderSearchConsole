@@ -1,6 +1,4 @@
-﻿
-using Core;
-using DomainModel.Requests;
+﻿using DomainModel.Requests;
 using DomainModel.RestClients;
 using DomainModel.Services;
 using DomainModel.Services.IServices;
