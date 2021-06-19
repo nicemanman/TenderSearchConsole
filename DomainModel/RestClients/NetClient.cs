@@ -9,11 +9,18 @@ using System.Threading.Tasks;
 
 namespace DomainModel.RestClients
 {
-    public abstract class NetClient : INetClient
+    public class NetClient : INetClient
     {
         protected RestClient client;
         ContentType contentType = ContentType.JSON;
-
+        public NetClient()
+        {
+            client = new RestClient();
+        }
+        public NetClient(string token, string url)
+        {
+            client = new RestClient(url);
+        }
         public IWebProxy Proxy
         {
             get { return client.Proxy; }

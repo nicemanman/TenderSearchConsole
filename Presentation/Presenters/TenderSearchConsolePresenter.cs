@@ -18,32 +18,62 @@ namespace Presentation.Presenters
 {
     public class TenderSearchConsolePresenter : BasePresenter<ITenderSearchConsoleView>
     {
-        
         private Dictionary<string, object> Info = new Dictionary<string, object>();
-
         private ConsoleWorkflow workflow;
         private readonly IService service;
         public TenderSearchConsolePresenter(IApplicationController controller, ITenderSearchConsoleView view, ITenderService service) : base(controller, view)
         {
             this.service = service;
-            var response = service.GetTenderDocumentationAsync(new TenderGetRequest("1768199")).Result;
-            if (response.IsValid && response is ITenderGetResponse tenderServiceGetResponse)
-            {
-                View.ShowSuccessMessage("Удачно получена информация от сервера");
-            }
-            else 
-            {
-                View.ShowErrorMessage(response.ValidationResult.Messages[0]);
-            }
             View.ParametersSelected += View_ParametersSelected;
+            View.MenuRowSelected += View_MenuRowSelected;
+            View_Restart();
+        }
 
+        private void View_MenuRowSelected(int obj)
+        {
+
+            if (workflow.CurrentConsoleStep.menuItems.TryGetValue(obj, out var menuItem)) 
+            {
+                if (menuItem.consoleStep != null) menuItem.consoleStep.Function();
+                else menuItem.action?.Invoke();
+            }
+        }
+
+        private void View_Restart()
+        {
+            View.ShowSuccessMessage("Добро пожаловать в программу для поиска тендеров!");
             //можно добавить любое количество шагов, поменять их местами
+            
+            var invokeTenderNumberStep = new ConsoleStep(InvokeTenderNumberInput,
+                new Dictionary<int, MenuItem>()
+                {
+                    { 1, new MenuItem("Перейти на следующую страницу", GoToNextPage)},
+                    { 2, new MenuItem("Перейти на предыдущую страницу", GoToPrevPage)},
+                    { 3, new MenuItem("Перейти в начало", ()=> { View_Restart(); })}
+                });
+
+            var startStep = new ConsoleStep(InvokeTenderNumberInput,
+                new Dictionary<int, MenuItem>()
+                {
+                    { 1, new MenuItem("Поиск тендера по номеру", invokeTenderNumberStep)}
+                });
+
             workflow = new ConsoleWorkflow(new List<IConsoleStep>()
             {
-                
+                startStep, invokeTenderNumberStep
             });
             while (!workflow.Stop)
                 workflow.Execute().Wait();
+        }
+
+        private void GoToNextPage() 
+        {
+        
+        }
+
+        private void GoToPrevPage() 
+        {
+        
         }
 
         private void View_ParametersSelected(Dictionary<string, object> obj)
@@ -51,23 +81,20 @@ namespace Presentation.Presenters
             Info = obj;
         }
         
-        private Task InvokeParametersInput()
+        private Task InvokeTenderNumberInput()
         {
-            var parameters = new Response();
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("TenderNumber","Номер тендера (или его часть)");
             View.ShowMessage("Введите параметры (каждый параметр с новой строчки):");
-            if (!parameters.IsValid) 
-            {
-                ShowErrors(parameters.ValidationResult);
-                return Task.CompletedTask;
-            }
+            
             var index = 1;
-            foreach (var parameter in parameters.Info.Keys)
+            foreach (var parameter in parameters.Keys)
             {
-                var paramName = parameters.Info[parameter];
+                var paramName = parameters[parameter];
                 View.ShowMessage($"{index}.{paramName}");
                 index++;
             }
-            View.InvokeInput(parameters.Info.Keys.ToList());
+            View.InvokeInput(parameters.Keys.ToList());
             return Task.CompletedTask;
         }
 
@@ -79,7 +106,10 @@ namespace Presentation.Presenters
                 View.ShowErrorMessage(message);
             }
         }
-        
-        
+
+
+       
     }
+
+    
 }

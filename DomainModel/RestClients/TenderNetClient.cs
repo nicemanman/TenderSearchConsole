@@ -22,6 +22,8 @@ namespace DomainModel.RestClients
         {
             client = new RestClient(TENDER_RESOURCE);
         }
+        public TenderNetClient(string token, string url) : base(token, url) 
+        { }
         public async Task<TenderGetResponseModel> GetTenders(ITenderGetRequest request)
         {
             var tenders = await QueryTender(new TenderGetRequestModel() 

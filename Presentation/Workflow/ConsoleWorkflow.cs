@@ -13,15 +13,26 @@ namespace Presentation.Workflow
         {
             this.steps = steps;
         }
-
         public bool Stop { get; set; } = false;
-
+        public IConsoleStep CurrentConsoleStep { get; set; }
+        public int CurrentConsoleStepIndex { get; set; }
         public async Task Execute()
         {
-            foreach (var step in steps)
-            {
-                await step.Function?.Invoke();
-            }
+            int index = 0;
+            if (!Stop)
+                foreach (var step in steps)
+                {
+                    CurrentConsoleStep = step;
+                    CurrentConsoleStepIndex = index;
+                    index++;
+
+                    await step.Function?.Invoke();
+                }
+        }
+
+        public void Add(IConsoleStep step) 
+        {
+            steps.Insert(CurrentConsoleStepIndex, step);
         }
     }
 }

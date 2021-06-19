@@ -9,6 +9,14 @@ namespace DomainModel.Responses
 {
     public class TenderGetResponse : Response, ITenderGetResponse
     {
+        public TenderGetResponse(ValidationResult validationResult) : base(validationResult)
+        {
+
+        }
+        public TenderGetResponse()
+        {
+
+        }
         public List<documentation> TenderDocumentation { get; set; }
         public List<InvData> Tenders { get; set; }
     }

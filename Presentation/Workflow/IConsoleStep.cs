@@ -9,5 +9,6 @@ namespace Presentation.Workflow
     public interface IConsoleStep
     {
         Func<Task> Function { get; }
+        Dictionary<int, MenuItem> menuItems { get; }
     }
 }

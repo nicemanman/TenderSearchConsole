@@ -8,7 +8,9 @@ namespace Presentation.Workflow
 {
     public interface IConsoleWorkflow
     {
+        IConsoleStep CurrentConsoleStep { get; set; }
         bool Stop { get; set; }
         Task Execute();
+        void Add(IConsoleStep step);
     }
 }

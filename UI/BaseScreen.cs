@@ -11,6 +11,7 @@ namespace UI
     public abstract class BaseScreen : IConsoleView
     {
         public event Action<Dictionary<string, object>> ParametersSelected;
+        public event Action<int> MenuRowSelected;
 
         public void Close(IConsoleView nextView)
         {
@@ -63,6 +64,31 @@ namespace UI
             Console.WriteLine();
             Console.WriteLine(message);
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public void InvokeMenuInput()
+        {
+            bool menuRowSelected = false;
+            int menuRowNumber = 0;
+            while (!menuRowSelected)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Введите номер пункта меню");
+                string menuRowNumberString = Console.ReadLine();
+                if (!int.TryParse(menuRowNumberString, out var integerMenuRowNumber))
+                {
+                    Console.WriteLine("Введен некорректный номер пункта меню, попробуйте еще раз");
+                }
+                else
+                {
+                    menuRowSelected = true;
+                    menuRowNumber = integerMenuRowNumber;
+                }
+            }
+            if (menuRowSelected)
+            {
+                MenuRowSelected?.Invoke(menuRowNumber);
+            }
         }
     }
 }

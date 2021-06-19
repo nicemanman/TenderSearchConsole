@@ -17,11 +17,9 @@ namespace DomainModel.Responses
     }
     public class Response : IResponse
     {
-        
         public Response(ValidationResult result)
         {
             ValidationResult = result;
-            
         }
         public Response()
         {
@@ -29,8 +27,6 @@ namespace DomainModel.Responses
         }
         public bool IsValid => ValidationResult == null ? true : ValidationResult.Messages.Count() == 0;
         public ValidationResult ValidationResult { get; set; } = new ValidationResult();
-
-        public string Message { get; }
 
         public Dictionary<string, object> Info { get; set; }
     }

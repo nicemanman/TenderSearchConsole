@@ -16,6 +16,8 @@ namespace Presentation.Common
         void ShowErrorMessage(string errorMessage);
         void ShowError(Exception ex);
         void InvokeInput(List<string> list);
+        void InvokeMenuInput();
         event Action<Dictionary<string, object>> ParametersSelected;
+        event Action<int> MenuRowSelected;
     }
 }
