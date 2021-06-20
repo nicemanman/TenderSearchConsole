@@ -1,5 +1,6 @@
 ﻿
 using DomainModel.Models;
+using DomainModel.Parsers;
 using DomainModel.Requests;
 using DomainModel.Requests.TenderServiceRequests;
 using DomainModel.Responses;
@@ -33,6 +34,7 @@ namespace DomainModel.Services
 
         public async Task<ITenderGetResponse> GetTendersAsync(ITenderGetRequest request)
         {
+            await new AngleSharpHtmlParser().Run();
             var tenderResponse = await client.GetTenders(request);
             return new TenderGetResponse()
             {
