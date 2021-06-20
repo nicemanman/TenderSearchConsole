@@ -29,7 +29,10 @@ namespace DomainModel.RestClients
             TenderGetResponseModel response;
             if (string.IsNullOrWhiteSpace(request.TenderNumber))
             {
-                response = await QueryTender(new TenderGetRequestModel());
+                response = await QueryTender(new TenderGetRequestModel() 
+                {
+                    page = request.Page
+                });
             }
             else 
             {

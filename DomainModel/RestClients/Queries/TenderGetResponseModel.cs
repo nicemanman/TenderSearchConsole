@@ -42,7 +42,7 @@ namespace DomainModel.RestClients.Queries
         /// <summary>
         /// Наименование заказчика
         /// </summary>
-        public string CustomFullName { get; set; }
+        public string CustomerFullName { get; set; }
 
         /// <summary>
         /// Наименование тендера

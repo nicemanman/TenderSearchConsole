@@ -37,7 +37,8 @@ namespace DomainModel.Services
             return new TenderGetResponse()
             {
                 Tenders = tenderResponse.invData,
-                PagesCount = tenderResponse.totalpages
+                PagesCount = tenderResponse.totalpages,
+                CurrentPage = tenderResponse.currpage
             };
         }
     }

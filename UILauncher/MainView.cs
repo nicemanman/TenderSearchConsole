@@ -1,4 +1,5 @@
-﻿using DomainModel.RestClients.Queries;
+﻿using DomainModel.Responses;
+using DomainModel.RestClients.Queries;
 using Presentation.Views;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,10 @@ namespace UILauncher
         }
         private void Tenders_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            TendersCellClick();
+        }
+        private void TendersCellClick() 
+        {
             var active = Tenders.CurrentRow;
             var id = active?.Cells["Id"].Value;
             if (id != null)
@@ -63,7 +68,6 @@ namespace UILauncher
             else
                 DocumentationList.Items.Clear();
         }
-
         private void PrevPage_Click(object sender, EventArgs e)
         {
             if (CurrentPage > 1) 
@@ -103,29 +107,25 @@ namespace UILauncher
             base.Show();
         }
 
-        public void UpdateTendersGrid(List<InvData> tenders, int pagesCount)
+        public void UpdateTendersGrid(ITenderGetResponse model)
         {
             Tenders.Rows.Clear();
-            foreach (var tender in tenders)
+            foreach (var tender in model.Tenders)
             {
                 Tenders.Rows.Add(
                     tender.Id, 
                     tender.TradeName, 
                     tender.TradeStateName, 
-                    tender.CustomFullName, 
+                    tender.CustomerFullName, 
                     tender.InitialPrice, 
                     tender.PublicationDate, 
                     tender.FillingApplicationEndDate);
             }
-            AllPages = pagesCount;
-            AllPagesCount.Text = pagesCount.ToString();
+            AllPages = model.PagesCount;
+            AllPagesCount.Text = AllPages.ToString();
+            CurrentPage = model.CurrentPage;
             CurrentPageCount.Text = CurrentPage.ToString();
-            var active = Tenders.CurrentRow;
-            var id = active?.Cells["Id"].Value;
-            if (id != null)
-                UpdateTenderDocumentationList?.Invoke(id.ToString());
-            else
-                DocumentationList.Items.Clear();
+            TendersCellClick();
         }
 
         public void Wait(Progress<string> progress)

@@ -71,7 +71,7 @@ namespace Presentation.Presenters
                 });
                 CurrentTendersPage.Clear();
                 CurrentTendersPage.AddRange(tenders.Tenders);
-                View.UpdateTendersGrid(tenders.Tenders, tenders.PagesCount);
+                View.UpdateTendersGrid(tenders);
             }
         }
     }
