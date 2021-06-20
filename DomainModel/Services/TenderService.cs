@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DomainModel.Services
@@ -34,13 +35,12 @@ namespace DomainModel.Services
 
         public async Task<ITenderGetResponse> GetTendersAsync(ITenderGetRequest request)
         {
-            await new AngleSharpHtmlParser().Run();
             var tenderResponse = await client.GetTenders(request);
             return new TenderGetResponse()
             {
                 Tenders = tenderResponse.invData,
                 PagesCount = tenderResponse.totalpages,
-                CurrentPage = tenderResponse.currpage
+                CurrentPage = tenderResponse.currpage,
             };
         }
     }

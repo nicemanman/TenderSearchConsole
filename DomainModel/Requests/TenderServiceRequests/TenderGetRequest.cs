@@ -22,6 +22,10 @@ namespace DomainModel.Requests.TenderServiceRequests
         /// Если флаг true, то при загрузке тендеров они будут загружены вместе с информацией о документации
         /// </summary>
         public bool WithDocumentation { get; set; } = false;
+        /// <summary>
+        /// Если флаг true, то при загрузке тендеров они будут загружены вместе с извещением тендера
+        /// </summary>
+        public bool WithTenderNotice { get; set; } = false;
         public int Page { get; set; } = 1;
     }
 }

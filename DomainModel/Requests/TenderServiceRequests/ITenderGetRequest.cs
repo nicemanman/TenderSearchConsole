@@ -11,5 +11,6 @@ namespace DomainModel.Requests.TenderServiceRequests
         string TenderNumber { get; set; }
         int Page { get; set; }
         bool WithDocumentation { get; set; }
+        bool WithTenderNotice { get; set; }
     }
 }

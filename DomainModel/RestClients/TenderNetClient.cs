@@ -1,4 +1,6 @@
-﻿using DomainModel.Requests.TenderServiceRequests;
+﻿using DomainModel.Models;
+using DomainModel.Parsers;
+using DomainModel.Requests.TenderServiceRequests;
 using DomainModel.RestClients.Queries;
 using RestSharp;
 using System;
@@ -26,6 +28,7 @@ namespace DomainModel.RestClients
         { }
         public async Task<TenderGetResponseModel> GetTenders(ITenderGetRequest request)
         {
+            //Загрузка тендеров
             TenderGetResponseModel response;
             if (string.IsNullOrWhiteSpace(request.TenderNumber))
             {
@@ -43,7 +46,52 @@ namespace DomainModel.RestClients
                     itemsPerPage = 10
                 });
             }
-            
+
+            //Парсим страницы извещения
+            //TODO: Api для парсинга страницы. Не хватило на него времени.
+            if (request.WithTenderNotice)
+            foreach (var tender in response.invData)
+            {
+                try
+                {
+                    var parser = new AngleSharpHtmlParser();
+                    var document = await parser.GetDocumentAsync(string.Format("https://market.mosreg.ru/Trade/ViewTrade/{0}", tender.Id));
+                    var informationAboutCustomerTable = await parser.SelectFromDocument(document, "div > .informationAboutCustomer__informationPurchase");
+                    if (informationAboutCustomerTable == null) continue;
+
+                    var deliveryAddressText = informationAboutCustomerTable
+                        .Children.Where(x => x.ClassName == "informationAboutCustomer__informationPurchase-infoBlock infoBlock").ElementAt(5)
+                        .Children.Where(x => x.ClassName == "infoBlock__text").FirstOrDefault().TextContent.Replace("\n", "").Replace("\r", "");
+                    tender.notice.DeliveryAddress = deliveryAddressText;
+                    var lotsTable = await parser.SelectFromDocument(document, "div > .objectPurchase");
+                    if (lotsTable == null) continue;
+                    var lots = lotsTable.Children.ElementAt(1).Children;
+
+                    foreach (var lot in lots)
+                    {
+                        var name = lot.Children.Where(x => x.ClassName == "outputResults__oneResult-leftPart leftPart").ElementAt(0).ChildNodes.ElementAt(1).ChildNodes.ElementAt(2).TextContent.Replace("\n", "").Replace("\r", "") ;
+                        var centerPart = lot.Children.Where(x => x.ClassName == "outputResults__oneResult-centerPart centerPart");
+                        var unit = centerPart.ElementAt(0).ChildNodes.ElementAt(1).ChildNodes.ElementAt(1).ChildNodes.ElementAt(2).TextContent.Replace("\n", "").Replace("\r", "");
+                        var count = centerPart.ElementAt(0).ChildNodes.ElementAt(1).ChildNodes.ElementAt(3).ChildNodes.ElementAt(2).TextContent.Replace("\n", "").Replace("\r", "");
+                        var rightPart = lot.Children.Where(x => x.ClassName == "outputResults__oneResult-rightPart rightPart");
+                        var price = rightPart.ElementAt(0).ChildNodes.ElementAt(1).ChildNodes.ElementAt(1).ChildNodes.ElementAt(2).TextContent.Replace("\n", "").Replace("\r", "");
+
+                        var newLot = new TenderPosition();
+                        newLot.Name = name;
+                        newLot.Unit = unit;
+                        newLot.Count = count;
+                        newLot.Price = price;
+
+                        tender.notice.Positions.Add(newLot);
+                    }
+                }
+                catch (Exception ex) 
+                {
+                    continue;
+                }
+            }
+
+            //Загрузка документации
             if (request.WithDocumentation) 
             {
                 foreach (var tender in response.invData)
@@ -52,6 +100,7 @@ namespace DomainModel.RestClients
                     tender.documentation = documentation;
                 }
             }
+
             return response;
         }
         public async Task<List<documentation>> GetTenderDocumentation(ITenderGetRequest request)

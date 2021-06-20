@@ -23,11 +23,17 @@ namespace Presentation.Presenters
         {
             View.UpdateTendersList += View_UpdateTendersList;
             View.UpdateTenderDocumentationList += View_UpdateTenderDocumentationList;
+            View.UpdateTenderNotice += View_UpdateTenderNotice;
             this.service = service;
             if (!CheckInternetConnection()) 
             {
                 View.SetOffInternetConnectionState();
             }
+        }
+
+        private void View_UpdateTenderNotice(string tenderNumber)
+        {
+            View.UpdateTenderNoticeGrid(CurrentTendersPage.Where(x => x.Id.ToString().Equals(tenderNumber)).FirstOrDefault()?.notice);
         }
 
         private void View_UpdateTenderDocumentationList(string tenderNumber)
@@ -67,7 +73,8 @@ namespace Presentation.Presenters
                 var tenders = await service.GetTendersAsync(new TenderGetRequest(tenderNumber)
                 {
                     Page = pageNumber,
-                    WithDocumentation = true
+                    WithDocumentation = true,
+                    WithTenderNotice = true
                 });
                 CurrentTendersPage.Clear();
                 CurrentTendersPage.AddRange(tenders.Tenders);

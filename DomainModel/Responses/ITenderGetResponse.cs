@@ -1,4 +1,5 @@
-﻿using DomainModel.RestClients.Queries;
+﻿using DomainModel.Models;
+using DomainModel.RestClients.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace DomainModel.Responses
     {
         public List<documentation> TenderDocumentation { get; set; }
         public List<InvData> Tenders { get; set; }
+        public TenderNotice Notice { get; set; }
         int PagesCount { get; set; }
         int CurrentPage { get; set; }
     }

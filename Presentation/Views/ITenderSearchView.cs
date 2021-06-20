@@ -1,4 +1,5 @@
-﻿using DomainModel.Responses;
+﻿using DomainModel.Models;
+using DomainModel.Responses;
 using DomainModel.RestClients.Queries;
 using Presentation.Common;
 using System;
@@ -13,8 +14,10 @@ namespace Presentation.Views
     {
         event Func<string, int, Task> UpdateTendersList;
         event Action<string> UpdateTenderDocumentationList;
+        event Action<string> UpdateTenderNotice;
         void UpdateTendersGrid(ITenderGetResponse model);
         void UpdateDocumentationsList(List<documentation> list);
+        void UpdateTenderNoticeGrid(TenderNotice notice);
         void SetOffInternetConnectionState();
         void SetOnInternetConnectionState();
     }

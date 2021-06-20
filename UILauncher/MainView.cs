@@ -1,4 +1,5 @@
-﻿using DomainModel.Responses;
+﻿using DomainModel.Models;
+using DomainModel.Responses;
 using DomainModel.RestClients.Queries;
 using Presentation.Views;
 using System;
@@ -59,14 +60,20 @@ namespace UILauncher
         {
             TendersCellClick();
         }
-        private void TendersCellClick() 
+        private void TendersCellClick()
         {
             var active = Tenders.CurrentRow;
             var id = active?.Cells["Id"].Value;
             if (id != null)
+            {
                 UpdateTenderDocumentationList?.Invoke(id.ToString());
-            else
+                UpdateTenderNotice?.Invoke(id.ToString());
+            }
+            else 
+            {
                 DocumentationList.Items.Clear();
+                TenderPositions.Rows.Clear();
+            }
         }
         private void PrevPage_Click(object sender, EventArgs e)
         {
@@ -94,6 +101,7 @@ namespace UILauncher
 
         public event Func<string, int, Task> UpdateTendersList;
         public event Action<string> UpdateTenderDocumentationList;
+        public event Action<string> UpdateTenderNotice;
 
         public new void Show()
         {
@@ -118,8 +126,8 @@ namespace UILauncher
                     tender.TradeStateName, 
                     tender.CustomerFullName, 
                     tender.InitialPrice, 
-                    tender.PublicationDate, 
-                    tender.FillingApplicationEndDate);
+                    tender.PublicationDateTime, 
+                    tender.FillingApplicationEndDateTime);
             }
             AllPages = model.PagesCount;
             AllPagesCount.Text = AllPages.ToString();
@@ -208,6 +216,20 @@ namespace UILauncher
         public void SetOnInternetConnectionState()
         {
             Text = "Tender Win Soft";
+        }
+
+        public void UpdateTenderNoticeGrid(TenderNotice notice)
+        {
+            TenderPositions.Rows.Clear();
+            foreach (var noticePosition in notice.Positions)
+            {
+                TenderPositions.Rows.Add(
+                    noticePosition.Name, 
+                    noticePosition.Unit, 
+                    noticePosition.Count,
+                    noticePosition.Price, 
+                    notice.DeliveryAddress);
+            }
         }
     }
 }
