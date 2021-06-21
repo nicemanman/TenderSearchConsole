@@ -28,7 +28,7 @@ namespace DomainModel.RestClients
         { }
         public async Task<TenderGetResponseModel> GetTenders(ITenderGetRequest request)
         {
-            //Загрузка тендеров
+            //1. Загрузка тендеров
             TenderGetResponseModel response;
             if (string.IsNullOrWhiteSpace(request.TenderNumber))
             {
@@ -47,7 +47,7 @@ namespace DomainModel.RestClients
                 });
             }
 
-            //Парсим страницы извещения
+            //2. Парсим страницы извещения
             //TODO: Api для парсинга страницы. Не хватило на него времени.
             if (request.WithTenderNotice)
             foreach (var tender in response.invData)
@@ -87,11 +87,12 @@ namespace DomainModel.RestClients
                 }
                 catch (Exception ex) 
                 {
+                    //TODO: Здесь по правильному надо это логгировать
                     continue;
                 }
             }
 
-            //Загрузка документации
+            //3. Загрузка документации
             if (request.WithDocumentation) 
             {
                 foreach (var tender in response.invData)

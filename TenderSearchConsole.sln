@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModel", "DomainModel\DomainModel.csproj", "{B909CA0F-43D0-4CE6-B597-F1BCE3A4E6A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UILauncher", "UILauncher\UILauncher.csproj", "{FF243D14-D171-45A2-840C-B0B920498C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UILauncher", "UILauncher\UILauncher.csproj", "{FF243D14-D171-45A2-840C-B0B920498C1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

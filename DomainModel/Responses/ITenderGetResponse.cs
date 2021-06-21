@@ -10,9 +10,9 @@ namespace DomainModel.Responses
 {
     public interface ITenderGetResponse : IResponse
     {
-        public List<documentation> TenderDocumentation { get; set; }
-        public List<InvData> Tenders { get; set; }
-        public TenderNotice Notice { get; set; }
+        List<documentation> TenderDocumentation { get; set; }
+        List<InvData> Tenders { get; set; }
+        TenderNotice Notice { get; set; }
         int PagesCount { get; set; }
         int CurrentPage { get; set; }
     }

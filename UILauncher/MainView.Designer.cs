@@ -243,7 +243,6 @@ namespace UILauncher
             this.TenderNumber.Location = new System.Drawing.Point(15, 14);
             this.TenderNumber.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.TenderNumber.Name = "TenderNumber";
-            this.TenderNumber.PlaceholderText = "Номер тендера";
             this.TenderNumber.Size = new System.Drawing.Size(749, 23);
             this.TenderNumber.TabIndex = 1;
             // 

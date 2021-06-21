@@ -112,6 +112,10 @@ namespace DomainModel.RestClients.Queries
         /// Имя источника
         /// </summary>
         public string SourcePlatformName { get; set; }
+
+        /// <summary>
+        /// Документация тендера
+        /// </summary>
         public List<documentation> documentation { get; set; }
 
         /// <summary>
